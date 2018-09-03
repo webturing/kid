@@ -1,95 +1,107 @@
-
 <html>
 <meta charset="UTF-8">
-   A:<input size=2 type=text id=a_s value=10>-<input size=2 type=text id=a_e value=15>
-   B:<input size=2 type=text id=b_s value=1>-<input size=2 type=text id=b_e value=5>
-   计算:<select id=cal >
-	<option value='+'>+</option>
-<option value='-'>-</option>
-<option value='*'>x</option>
-<option value='/'>/</option>
+<div align="center">
+    A:<input size=2 type=text id=a_s value=10>-<input size=2 type=text id=a_e value=15>
+    B:<input size=2 type=text id=b_s value=1>-<input size=2 type=text id=b_e value=5>
+    计算:<select id=cal>
+    <option value='+'>+</option>
+    <option value='-'>-</option>
+    <option value='*'>x</option>
+    <option value='/'>/</option>
+</select>
+    <br>
+    <h2 id=mark>0</h2><input type=button onclick="do_test();" value="开始">
+    <h1 id=disp></h1>
+</div>
+<script>
+    function doc(id) {
+        return document.getElementById(id);
+    }
 
-   </select>
- <br>
- <h2 id=mark>0</h2><input type=button onclick="do_test();" value="开始">
-	<h1 id=disp ></h1>
-	
-   <script>
-	function doc(id){return document.getElementById(id);}
-	function display(txt){
-           var disp=doc("disp");
-	   disp.innerHTML=txt;
-	}
-	function getRand(tid){
-	   var t1=parseInt((doc(tid+"_s").value));
-	   var t2=parseInt((doc(tid+"_e").value));
-	   return parseInt(t1+(Math.random()*(t2-t1+1)));
-	}
-	function wrong(){
-	   alert("回答错误,扣除50分!\n");
-	   for(var i=0;i<3;i++)
-		alert("请大声念出正确答案\n"+question+"="+c);
-		
-	   mark-=50;
-	   wl.push(question);
-	   cr=0;
-	   display_mark();
-	   do_test();
-	}
-	function right(){
-	   var time=(new Date()).getTime()-startTime;
-	   var prize=new Array("你真棒!",
-				"帅呆了!","努力就有收获!","爸爸亲一下!","妈妈亲一下!",
-				"加油!","坚持就是胜利!","超级苦力怕!","我的口算我做主!",
-				"解除成就锁定!","算错念三遍马上就会做!","So easy!","MC玩家智商真高!",
-				"好厉害!");
-	   var msg=(prize[parseInt(Math.random()*prize.length)]);
-	   if(time<1200) msg="超快！"+msg;
-	   if(time<best) best=time;
-	   alert(time/1000+"秒，回答正确!\n"+msg+"\n奖励100分!\n"+question+"="+c);
-	   mark+=100;
-	   cr++;
-	   display_mark();
-	   do_test();
-	}
-	function display_mark(){
-	   var dm=doc("mark");
-	   var msg="总分:"+mark+" 连续正确"+cr+"次"+(cr>10?"超连击！！！":"");
-	   if(cr>10){
-		msg="<font color=red>"+msg+"</font>";
-	   }else if(cr>5){
-		msg="<font color=blue>"+msg+"</font>";
+    function display(txt) {
+        var disp = doc("disp");
+        disp.innerHTML = txt;
+    }
 
-	   }
-	   dm.innerHTML=msg+" <br>最短时间:"+best/1000;
-	}
-	function get_q(){
-	   if(wl.length>0&&cr>3) return wl.pop();
-	   a=getRand("a");
-	   b=getRand("b");
-	   return (a+doc("cal").value+b);
+    function getRand(tid) {
+        var t1 = parseInt((doc(tid + "_s").value));
+        var t2 = parseInt((doc(tid + "_e").value));
+        return parseInt(t1 + (Math.random() * (t2 - t1 + 1)));
+    }
 
-	}
-	function do_test(){
-	   var n=0;
-	   do{
-		n++;
-		//if(n>10000) break;
-	   	question=get_q();
-	   	c=parseInt(eval(question));
-	   }while(c<0 || c!=eval(question));
-	   var msg=question+"=?<br>";
-	   var s=c-parseInt(4*Math.random());
-	   for(var i=s;i<s+4;i++){
-		var func=(i==c)?"right();":"wrong();";
-	   	msg+="<input type=button onclick="+func+" value="+i+">";
-	   }
-	   startTime=new Date().getTime();
-	   display(msg);
-	}
-	var a,b,c,question,best=60000,mark=0,cr=0,wl=new Array();
-        var startTime=new Date().getTime();	
+    function wrong() {
+        alert("回答错误,扣除50分!\n");
+        for (var i = 0; i < 3; i++)
+            alert("请大声念出正确答案\n" + question + "=" + c);
+
+        mark -= 50;
+        wl.push(question);
+        cr = 0;
         display_mark();
         do_test();
-   </script>
+    }
+
+    function right() {
+        var time = (new Date()).getTime() - startTime;
+        var prize = new Array("你真棒!",
+            "帅呆了!", "努力就有收获!", "爸爸亲一下!", "妈妈亲一下!",
+            "加油!", "坚持就是胜利!", "超级苦力怕!", "我的口算我做主!",
+            "解除成就锁定!", "算错念三遍马上就会做!", "So easy!", "MC玩家智商真高!",
+            "好厉害!");
+        var msg = (prize[parseInt(Math.random() * prize.length)]);
+        if (time < 1200) msg = "超快！" + msg;
+        if (time < best) best = time;
+        alert(time / 1000 + "秒，回答正确!\n" + msg + "\n奖励100分!\n" + question + "=" + c);
+        mark += 100;
+        cr++;
+        display_mark();
+        do_test();
+    }
+
+    function display_mark() {
+        var dm = doc("mark");
+        var msg = "总分:" + mark + " 连续正确" + cr + "次" + (cr > 10 ? "超连击！！！" : "");
+        if (cr > 10) {
+            msg = "<font color=red>" + msg + "</font>";
+        } else if (cr > 5) {
+            msg = "<font color=blue>" + msg + "</font>";
+
+        }
+        dm.innerHTML = msg + " <br>最短时间:" + best / 1000;
+    }
+
+    function get_q() {
+        if (wl.length > 0 && cr > 3) return wl.pop();
+        a = getRand("a");
+        b = getRand("b");
+        return (a + doc("cal").value + b);
+
+    }
+
+    function do_test() {
+        var n = 0;
+        do {
+            n++;
+            //if(n>10000) break;
+            question = get_q();
+            c = parseInt(eval(question));
+        } while (c < 0 || c != eval(question));
+        var msg = question + "=?<br>";
+        var op = [c, c + 1, c - 1, c + 2, c - 2, c + 10, c - 10].sort(function (a, b) {
+            return a - b;
+        })
+        for (var i = 0; i < op.length; i++) {
+            c = op[i];
+            var func = (op[i] == c) ? "right();" : "wrong();";
+            msg += "<input type=button onclick=" + func + " value=" + op[i] + ">";
+        }
+        startTime = new Date().getTime();
+        display(msg);
+    }
+
+    var a, b, c, question, best = 60000, mark = 0, cr = 0, wl = new Array();
+    var startTime = new Date().getTime();
+    display_mark();
+    do_test();
+</script>
 </html>
